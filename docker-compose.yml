@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  # Configuração do banco de dados PostgreSQL
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: qualrole_database
+      POSTGRES_USER: ${database_user}
+      POSTGRES_PASSWORD: ${database_password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

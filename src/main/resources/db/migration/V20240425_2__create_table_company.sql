@@ -1,0 +1,13 @@
+CREATE TABLE company (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  document VARCHAR(15) NOT NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  address_id BIGINT NOT NULL,
+  phone VARCHAR(14) NOT NULL,
+  social_network TEXT,
+  address_number VARCHAR(80) NOT NULL,
+  address_complement VARCHAR(100),
+  dat_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  dat_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_company_address FOREIGN KEY (address_id) REFERENCES address(id)
+);
