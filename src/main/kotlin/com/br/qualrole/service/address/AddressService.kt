@@ -6,12 +6,13 @@ import com.br.qualrole.dto.AddressDTO
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.br.qualrole.mapper.AddressMapper
 import com.br.qualrole.service.address.specification.AddressSpecification
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
 @Service
 class AddressService(
-    val addressSpecification: AddressSpecification,
     val mapper: AddressMapper,
     val addressRepository: AddressRepository
 ) {
@@ -20,9 +21,12 @@ class AddressService(
         .let { addressRepository.save(it) }
         .let { mapper.addressEntityToDTO(it) }
 
-    fun getByFilterSpecification(filter: AddressFilterRequest): List<AddressDTO> {
-        val specification = addressSpecification.searchWithSpecification(filter)
-        return addressRepository.findAll(specification).map { mapper.addressEntityToDTO(it) }
+    fun getByFilterSpecification(
+        filter: AddressFilterRequest,
+        pageable: Pageable = PageRequest.of(0, 20)
+    ): List<AddressDTO> {
+        val specification = AddressSpecification.searchWithSpecification(filter)
+        return addressRepository.findAll(specification, pageable).map { mapper.addressEntityToDTO(it) }.content
     }
 
     fun getById(id: Long) = addressRepository

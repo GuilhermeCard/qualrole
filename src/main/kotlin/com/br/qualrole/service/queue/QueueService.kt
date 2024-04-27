@@ -1,5 +1,6 @@
 package com.br.qualrole.service.queue
 
+import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.controller.queue.request.QueueRequest
 import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
 import com.br.qualrole.domain.repository.QueueRepository
@@ -8,6 +9,10 @@ import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.br.qualrole.mapper.QueueMapper
 import com.br.qualrole.service.company.CompanyService
+import com.br.qualrole.service.queue.specification.QueueSpecification
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -44,5 +49,9 @@ class QueueService(
             ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.company.id}") }
     }
 
-    fun getAllQueues() = repository.findAll().map { mapper.queueEntityToDTO(it) }
+    fun getAllQueues(filterRequest: QueueFilterRequest, pageable: Pageable = defaultPagination()): List<QueueDTO> =
+        repository.findAll(QueueSpecification.searchWithSpecification(filterRequest), pageable)
+            .map { mapper.queueEntityToDTO(it) }.content
+
+    private fun defaultPagination() = PageRequest.of(0, 10, Sort.Direction.ASC, "CompanyDTO.name")
 }

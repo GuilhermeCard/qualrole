@@ -1,8 +1,10 @@
 package com.br.qualrole.controller.queue
 
+import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.controller.queue.request.QueueRequest
 import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
 import com.br.qualrole.service.queue.QueueService
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,5 +27,5 @@ class QueueController(val queueService: QueueService) {
     ) = queueService.updateSeats(queueId, request)
 
     @GetMapping
-    fun retrieveQueues() = queueService.getAllQueues()
+    fun retrieveQueues(filterRequest: QueueFilterRequest, pageable: Pageable) = queueService.getAllQueues(filterRequest, pageable)
 }

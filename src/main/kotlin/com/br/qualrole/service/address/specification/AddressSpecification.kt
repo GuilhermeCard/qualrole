@@ -7,11 +7,8 @@ import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.stereotype.Component
 
-@Component
-class AddressSpecification {
-
+object AddressSpecification {
     fun searchWithSpecification(specification: AddressFilterRequest): Specification<AddressEntity> {
         return Specification { root: Root<AddressEntity>, _: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
