@@ -3,15 +3,12 @@ package com.br.qualrole.controller
 import com.br.qualrole.IntegrationTest
 import com.br.qualrole.builder.AddressBuilder
 import com.br.qualrole.builder.CompanyBuilder
-import com.br.qualrole.domain.repository.AddressRepository
-import com.br.qualrole.domain.repository.CompanyRepository
 import com.br.qualrole.dto.CompanyDTO
 import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -21,16 +18,10 @@ private const val COMPANY_PATH = "/company"
 
 class CompanyControllerTest : IntegrationTest() {
 
-    @Autowired
-    lateinit var repository: CompanyRepository
-
-    @Autowired
-    lateinit var addressRepository: AddressRepository
-
     @Test
     fun `must return company by id`() {
         val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
-        val companyEntity = repository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity))
+        val companyEntity = companyRepository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity))
 
         val response = mockMvc.get("$COMPANY_PATH/${companyEntity.id}")
             .andExpect { status { isOk() } }
@@ -57,7 +48,7 @@ class CompanyControllerTest : IntegrationTest() {
     @Test
     fun `should throw ResourceAlreadyExistsException when there is already a company with the same document`() {
         val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
-        val document = repository.save(
+        val document = companyRepository.save(
             CompanyBuilder.giveCompanyEntity(
                 document = "65474691000100",
                 address = addressEntity

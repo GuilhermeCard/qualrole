@@ -17,7 +17,7 @@ data class QueueEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    var id: Long,
+    var id: Long? = null,
 
     @Column(name = "present_people")
     var presentPeople: Long,

@@ -2,7 +2,7 @@ package com.br.qualrole.controller
 
 import com.br.qualrole.IntegrationTest
 import com.br.qualrole.builder.AddressBuilder
-import com.br.qualrole.domain.repository.AddressRepository
+import com.br.qualrole.controller.address.request.AddressFilterRequest
 import com.br.qualrole.dto.AddressDTO
 import com.br.qualrole.mapper.AddressMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -12,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 private const val ADDRESS_PATH = "/address"
 
 class AddressControllerTest : IntegrationTest() {
-
-    @Autowired
-    lateinit var repository: AddressRepository
 
     @Autowired
     lateinit var mapper: AddressMapper
@@ -27,10 +26,43 @@ class AddressControllerTest : IntegrationTest() {
     @Test
     fun `must return all addresses`() {
         val addressEntity = AddressBuilder.giveAddressEntity()
-        repository.save(addressEntity)
+        addressRepository.save(addressEntity)
 
         val response = mockMvc.get(ADDRESS_PATH)
             .andExpect { status { isOk() } }
+            .andReturn().response.contentAsString
+            .let { objectMapper.readValue<List<AddressDTO>>(it) }
+
+        assertThat(response).size().isOne
+        assertThat(response[0].streetName).isEqualTo(addressEntity.streetName)
+        assertThat(response[0].state).isEqualTo(addressEntity.state)
+        assertThat(response[0].city).isEqualTo(addressEntity.city)
+        assertThat(response[0].district).isEqualTo(addressEntity.district)
+    }
+
+    @Test
+    fun `must return address filtered by parameters`() {
+        val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
+        addressRepository.save(addressEntity.copy(id = null))
+
+        val filter = AddressFilterRequest(
+            id = addressEntity.id,
+            district = addressEntity.district,
+            streetName = addressEntity.streetName,
+            zipCode = addressEntity.zipCode,
+            city = addressEntity.city,
+            state = addressEntity.state
+        )
+
+        val response = mockMvc.perform(
+            get(ADDRESS_PATH)
+                .queryParam(filter::id.name, filter.id?.toString())
+                .queryParam(filter::district.name, filter.district)
+                .queryParam(filter::streetName.name, filter.streetName)
+                .queryParam(filter::zipCode.name, filter.zipCode)
+                .queryParam(filter::city.name, filter.city)
+                .queryParam(filter::state.name, filter.state)
+        ).andExpect { status().isOk }
             .andReturn().response.contentAsString
             .let { objectMapper.readValue<List<AddressDTO>>(it) }
 

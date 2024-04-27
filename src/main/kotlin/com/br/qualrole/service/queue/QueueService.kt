@@ -41,7 +41,7 @@ class QueueService(
             ?.let { throw ResourceAlreadyExistsException("Queue already exists with id: ${it.id}") }
 
         repository.findByCompanyId(request.companyId)
-            ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.id}") }
+            ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.company.id}") }
     }
 
     fun getAllQueues() = repository.findAll().map { mapper.queueEntityToDTO(it) }

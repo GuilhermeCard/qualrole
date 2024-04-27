@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class QueueController(val queueService: QueueService) {
 
     @PostMapping("/create")
-    fun create(request: QueueRequest) = queueService.create(request)
+    fun create(@RequestBody request: QueueRequest) = queueService.create(request)
 
     @PutMapping("/{queueId}")
     fun updateSeats(
