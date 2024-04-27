@@ -1,12 +1,12 @@
-package com.br.qualrole.dto
+package com.br.qualrole.controller.company.request
 
 import com.br.qualrole.domain.entity.SocialNetwork
 
-data class CompanyDTO(
+data class CompanyRequest(
     val id: Long? = null,
     var document: String,
     val name: String,
-    var address: AddressDTO? = null,
+    val addressId: Long,
     val phone: String,
     val socialNetwork: List<SocialNetwork?>,
     val addressNumber: String,

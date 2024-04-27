@@ -21,7 +21,7 @@ class ExceptionHandler(val mapper: ObjectMapper) {
         return responseBuilder(ex.message, HttpStatus.NOT_FOUND)
     }
 
-    @ExceptionHandler(ResourceAlreadyExists::class)
+    @ExceptionHandler(ResourceAlreadyExistsException::class)
     fun handleUnprocessableEntity(ex: Exception): ResponseEntity<ErrorResponse> {
         return responseBuilder(ex.message, HttpStatus.UNPROCESSABLE_ENTITY)
     }

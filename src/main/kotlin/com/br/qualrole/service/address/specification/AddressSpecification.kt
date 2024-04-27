@@ -25,7 +25,12 @@ class AddressSpecification {
             }
 
             specification.streetName?.let {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("streetName")), "%${it.lowercase()}%"))
+                predicates.add(
+                    criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("streetName")),
+                        "%${it.lowercase()}%"
+                    )
+                )
             }
 
             specification.zipCode?.let {

@@ -4,7 +4,7 @@ import com.br.qualrole.controller.queue.request.QueueRequest
 import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
 import com.br.qualrole.domain.repository.QueueRepository
 import com.br.qualrole.dto.QueueDTO
-import com.br.qualrole.exception.ResourceAlreadyExists
+import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.br.qualrole.mapper.QueueMapper
 import com.br.qualrole.service.company.CompanyService
@@ -38,10 +38,10 @@ class QueueService(
     private fun verifyQueueAlreadyExists(request: QueueRequest) {
         request.id
             ?.let { repository.findById(it).getOrNull() }
-            ?.let { throw ResourceAlreadyExists("Queue already exists with id: ${it.id}") }
+            ?.let { throw ResourceAlreadyExistsException("Queue already exists with id: ${it.id}") }
 
         repository.findByCompanyId(request.companyId)
-            ?.let { throw ResourceAlreadyExists("Queue already exists with companyId: ${it.id}") }
+            ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.id}") }
     }
 
     fun getAllQueues() = repository.findAll().map { mapper.queueEntityToDTO(it) }

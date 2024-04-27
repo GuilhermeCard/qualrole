@@ -1,10 +1,10 @@
 package com.br.qualrole.controller.address.request
 
 data class AddressFilterRequest(
-    val id: Long?,
-    val district: String?,
-    val streetName: String?,
-    val zipCode: String?,
-    val city: String?,
-    val state: String?
+    val id: Long? = null,
+    val district: String? = null,
+    val streetName: String? = null,
+    val zipCode: String? = null,
+    val city: String? = null,
+    val state: String? = null
 )

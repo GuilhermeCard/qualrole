@@ -2,7 +2,6 @@ package com.br.qualrole.converter
 
 import com.br.qualrole.domain.entity.SocialNetwork
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.readValue
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter

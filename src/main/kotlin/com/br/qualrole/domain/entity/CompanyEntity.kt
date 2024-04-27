@@ -36,7 +36,7 @@ data class CompanyEntity(
     @Column
     var phone: String,
 
-    @Column(name="social_network")
+    @Column(name = "social_network")
     @Convert(converter = StringListConverter::class)
     var socialNetwork: List<SocialNetwork?>,
 
