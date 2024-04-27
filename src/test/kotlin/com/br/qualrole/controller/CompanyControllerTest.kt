@@ -48,12 +48,7 @@ class CompanyControllerTest : IntegrationTest() {
     @Test
     fun `should throw ResourceAlreadyExistsException when there is already a company with the same document`() {
         val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
-        val document = companyRepository.save(
-            CompanyBuilder.giveCompanyEntity(
-                document = "65474691000100",
-                address = addressEntity
-            )
-        ).document
+        val document = companyRepository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity)).document
 
         val companyRequest = CompanyBuilder.giveCompanyRequest(document = document, addressId = addressEntity.id!!)
 

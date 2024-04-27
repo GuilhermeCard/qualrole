@@ -1,5 +1,6 @@
 package com.br.qualrole.exception
 
+import br.com.caelum.stella.validation.InvalidStateException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import mu.KLogging
@@ -21,7 +22,7 @@ class ExceptionHandler(val mapper: ObjectMapper) {
         return responseBuilder(ex.message, HttpStatus.NOT_FOUND)
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException::class)
+    @ExceptionHandler(ResourceAlreadyExistsException::class, InvalidStateException::class)
     fun handleUnprocessableEntity(ex: Exception): ResponseEntity<ErrorResponse> {
         return responseBuilder(ex.message, HttpStatus.UNPROCESSABLE_ENTITY)
     }

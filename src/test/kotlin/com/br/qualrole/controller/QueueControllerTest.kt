@@ -81,14 +81,11 @@ class QueueControllerTest : IntegrationTest() {
     @Test
     fun `must return all registered queues`() {
         val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
-        val company1 = companyRepository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity))
-        val company2 = companyRepository.save(
-            CompanyBuilder.giveCompanyEntity(address = addressEntity).copy(id = null, document = "37.299.431/0001-00")
-        )
-        val company3 = companyRepository.save(
-            CompanyBuilder.giveCompanyEntity(address = addressEntity).copy(id = null, document = "90.146.712/0001-06")
-        )
-        listOf(company1, company2, company3).forEach { queueRepository.save(QueueBuilder.giveQueueEntity(it)) }
+
+        repeat(3) {
+            val companyEntity = companyRepository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity))
+            queueRepository.save(QueueBuilder.giveQueueEntity(companyEntity))
+        }
 
         val response = mockMvc.get(QUEUE_PATH)
             .andExpect { status { isOk() } }

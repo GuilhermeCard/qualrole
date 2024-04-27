@@ -36,6 +36,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     implementation("org.mapstruct:mapstruct:$mapStructVersion")
     implementation("io.github.microutils:kotlin-logging:3.0.5")
+    implementation("br.com.caelum.stella:caelum-stella-core:2.1.6")
 
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
 

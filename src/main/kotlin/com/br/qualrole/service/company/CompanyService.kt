@@ -1,12 +1,13 @@
 package com.br.qualrole.service.company
 
+import br.com.caelum.stella.format.CNPJFormatter
+import br.com.caelum.stella.validation.CNPJValidator
 import com.br.qualrole.controller.company.request.CompanyRequest
 import com.br.qualrole.domain.repository.CompanyRepository
 import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.br.qualrole.mapper.CompanyMapper
 import com.br.qualrole.service.address.AddressService
-import com.br.qualrole.utils.formatToCPForCNPJ
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -18,7 +19,8 @@ class CompanyService(
 ) {
 
     fun create(companyRequest: CompanyRequest) = companyRequest
-        .apply { this.document = this.document.formatToCPForCNPJ() }
+        .apply { CNPJValidator().assertValid(this.document) }
+        .let { it.document = CNPJFormatter().unformat(it.document) }
         .let { repository.findFirstByDocument(companyRequest.document) }
         ?.let { throw ResourceAlreadyExistsException("Company already exists with document: ${it.document}") }
         ?: addressService.getById(companyRequest.addressId)

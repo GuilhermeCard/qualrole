@@ -1,5 +1,6 @@
 package com.br.qualrole.builder
 
+import br.com.caelum.stella.validation.CNPJValidator
 import com.br.qualrole.controller.company.request.CompanyRequest
 import com.br.qualrole.domain.entity.AddressEntity
 import com.br.qualrole.domain.entity.CompanyEntity
@@ -16,7 +17,7 @@ object CompanyBuilder {
         socialNetwork: List<SocialNetwork>? = null,
         addressNumber: String? = null
     ) = CompanyEntity(
-        document = document ?: "95.160.239/0001-35",
+        document = document ?: CNPJValidator().generateRandomValid(),
         name = name ?: "Maya e Gustavo Pizzaria Ltda",
         address = address,
         phone = phone ?: "37997385734",
@@ -30,7 +31,7 @@ object CompanyBuilder {
     )
 
     fun giveCompanyRequest(document: String? = null, addressId: Long) = CompanyRequest(
-        document = document ?: "89986609000195",
+        document = document ?: CNPJValidator().generateRandomValid(),
         name = "Osvaldo e Rafaela Eletrônica ME",
         addressId = addressId,
         phone = "31983696712",
