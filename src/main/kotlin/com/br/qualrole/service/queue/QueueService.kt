@@ -49,9 +49,11 @@ class QueueService(
             ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.company.id}") }
     }
 
-    fun getAllQueues(filterRequest: QueueFilterRequest, pageable: Pageable = defaultPagination()): List<QueueDTO> =
+    fun getAllQueues(
+        filterRequest: QueueFilterRequest,
+        pageable: Pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "company.name")
+    ): List<QueueDTO> =
         repository.findAll(QueueSpecification.searchWithSpecification(filterRequest), pageable)
             .map { mapper.queueEntityToDTO(it) }.content
 
-    private fun defaultPagination() = PageRequest.of(0, 10, Sort.Direction.ASC, "CompanyDTO.name")
 }

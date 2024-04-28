@@ -86,4 +86,27 @@ class CompanyControllerTest : IntegrationTest() {
         assertThat(response.socialNetwork).isEqualTo(companyRequest.socialNetwork)
         assertThat(response.addressNumber).isEqualTo(companyRequest.addressNumber)
     }
+
+    @Test
+    fun `must return company filtered by parameters`() {
+        val addressId = addressRepository.save(AddressBuilder.giveAddressEntity()).id
+        val companyRequest = CompanyBuilder.giveCompanyRequest(addressId = addressId!!)
+
+        val request = post("$COMPANY_PATH/create")
+            .content(objectMapper.writeValueAsString(companyRequest))
+            .contentType(MediaType.APPLICATION_JSON)
+
+        val response = mockMvc
+            .perform(request)
+            .andExpect { status().isCreated }
+            .andReturn().response.contentAsString
+            .let { objectMapper.readValue<CompanyDTO>(it) }
+
+        assertThat(response.id).isNotNull()
+        assertThat(response.document).isEqualTo(companyRequest.document)
+        assertThat(response.address?.id).isEqualTo(companyRequest.addressId)
+        assertThat(response.phone).isEqualTo(companyRequest.phone)
+        assertThat(response.socialNetwork).isEqualTo(companyRequest.socialNetwork)
+        assertThat(response.addressNumber).isEqualTo(companyRequest.addressNumber)
+    }
 }

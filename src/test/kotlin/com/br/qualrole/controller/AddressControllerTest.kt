@@ -42,7 +42,8 @@ class AddressControllerTest : IntegrationTest() {
 
     @Test
     fun `must return address filtered by parameters`() {
-        val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
+        repeat(3) { addressRepository.save(AddressBuilder.giveAddressEntity()) }
+        val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity(district = "Pacaembu"))
         addressRepository.save(addressEntity.copy(id = null))
 
         val filter = AddressFilterRequest(
