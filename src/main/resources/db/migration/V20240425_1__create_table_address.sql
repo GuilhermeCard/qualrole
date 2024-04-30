@@ -8,3 +8,16 @@ CREATE TABLE address (
   dat_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   dat_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE address_audit (
+   id BIGINT NOT NULL,
+   rev BIGINT NOT NULL,
+   revtype SMALLINT NOT NULL,
+   district VARCHAR(80) NOT NULL,
+   street_name VARCHAR(255) NOT NULL,
+   zip_code VARCHAR(80) NOT NULL,
+   city VARCHAR(80) NOT NULL,
+   state VARCHAR(80) NOT NULL,
+
+   CONSTRAINT fk_revinfo_address_audit FOREIGN KEY (rev) REFERENCES revinfo(rev)
+);

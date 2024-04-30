@@ -8,11 +8,14 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToOne
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
-import java.time.LocalDateTime
+import jakarta.persistence.Table
+import org.hibernate.envers.AuditTable
+import org.hibernate.envers.Audited
 
-@Entity(name = "queue")
+@Entity
+@Table(name = "queue")
+@Audited
+@AuditTable("queue_audit")
 data class QueueEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +30,6 @@ data class QueueEntity(
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
-    var company: CompanyEntity,
+    var company: CompanyEntity
 
-    @CreationTimestamp
-    @Column(name = "dat_creation")
-    var datCreation: LocalDateTime? = null,
-
-    @UpdateTimestamp
-    @Column(name = "dat_update")
-    var datUpdate: LocalDateTime? = null
-)
+): BaseEntity()

@@ -11,12 +11,15 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
+import jakarta.persistence.Table
+import org.hibernate.envers.AuditTable
+import org.hibernate.envers.Audited
 import java.net.URL
-import java.time.LocalDateTime
 
-@Entity(name = "company")
+@Entity
+@Table(name = "company")
+@Audited
+@AuditTable("company_audit")
 data class CompanyEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,16 +47,9 @@ data class CompanyEntity(
     var addressNumber: String,
 
     @Column(name = "address_complement")
-    var addressComplement: String? = null,
+    var addressComplement: String? = null
 
-    @CreationTimestamp
-    @Column(name = "dat_creation")
-    var datCreation: LocalDateTime? = null,
-
-    @UpdateTimestamp
-    @Column(name = "dat_update")
-    var datUpdate: LocalDateTime? = null
-)
+): BaseEntity()
 
 data class SocialNetwork(
     val type: SocialNetworkType,

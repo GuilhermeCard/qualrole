@@ -37,6 +37,7 @@ dependencies {
     implementation("org.mapstruct:mapstruct:$mapStructVersion")
     implementation("io.github.microutils:kotlin-logging:3.0.5")
     implementation("br.com.caelum.stella:caelum-stella-core:2.1.6")
+    implementation("org.hibernate:hibernate-envers:6.5.0.Final")
 
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
 
