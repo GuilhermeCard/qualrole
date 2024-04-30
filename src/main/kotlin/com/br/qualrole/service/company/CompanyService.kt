@@ -19,8 +19,8 @@ class CompanyService(
 ) {
 
     fun create(companyRequest: CompanyRequest) = companyRequest
-        .apply { CNPJValidator().assertValid(this.document) }
-        .let { it.document = CNPJFormatter().unformat(it.document) }
+        .apply { this.document = CNPJFormatter().unformat(this.document) }
+        .let { CNPJValidator().assertValid(it.document) }
         .let { repository.findFirstByDocument(companyRequest.document) }
         ?.let { throw ResourceAlreadyExistsException("Company already exists with document: ${it.document}") }
         ?: addressService.getById(companyRequest.addressId)
