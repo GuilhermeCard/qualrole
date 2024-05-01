@@ -24,6 +24,8 @@ CREATE TABLE company_audit (
   social_network TEXT,
   address_number VARCHAR(80) NOT NULL,
   address_complement VARCHAR(100),
+  dat_creation TIMESTAMP NOT NULL,
+  dat_update TIMESTAMP NOT NULL,
 
   CONSTRAINT fk_revinfo_company_audit FOREIGN KEY (rev) REFERENCES revinfo(rev)
 );

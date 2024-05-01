@@ -16,6 +16,8 @@ CREATE TABLE queue_audit (
   present_people BIGINT NOT NULL,
   max_capacity BIGINT NOT NULL,
   company_id BIGINT NOT NULL,
+  dat_creation TIMESTAMP NOT NULL,
+  dat_update TIMESTAMP NOT NULL,
 
   CONSTRAINT fk_revinfo_queue_audit FOREIGN KEY (rev) REFERENCES revinfo(rev)
 );

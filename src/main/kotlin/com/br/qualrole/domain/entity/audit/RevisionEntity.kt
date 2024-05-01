@@ -1,5 +1,6 @@
 package com.br.qualrole.domain.entity.audit
 
+import com.br.qualrole.listner.CustomRevisionListener
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,11 +12,10 @@ import org.hibernate.envers.RevisionNumber
 import org.hibernate.envers.RevisionTimestamp
 import java.time.LocalDateTime
 
-
 @Entity
-@RevisionEntity
+@RevisionEntity(CustomRevisionListener::class)
 @Table(name = "revinfo")
-class RevInfoEntity(
+class RevisionEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @RevisionNumber
@@ -24,7 +24,8 @@ class RevInfoEntity(
 
     @RevisionTimestamp
     @Column(name = "revtstmp")
-    val revisionTimestamp: LocalDateTime? = null,
+    val datRevision: LocalDateTime? = null,
 
-    val username: String? = null
+    @Column(name = "username")
+    var username: String? = null
 )

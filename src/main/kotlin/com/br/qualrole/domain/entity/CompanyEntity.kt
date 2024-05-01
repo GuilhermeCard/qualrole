@@ -12,9 +12,12 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import org.hibernate.envers.AuditTable
 import org.hibernate.envers.Audited
 import java.net.URL
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "company")
@@ -47,9 +50,16 @@ data class CompanyEntity(
     var addressNumber: String,
 
     @Column(name = "address_complement")
-    var addressComplement: String? = null
+    var addressComplement: String? = null,
 
-): BaseEntity()
+    @CreationTimestamp
+    @Column(name = "dat_creation")
+    var datCreation: LocalDateTime? = null,
+
+    @UpdateTimestamp
+    @Column(name = "dat_update")
+    var datUpdate: LocalDateTime? = null
+)
 
 data class SocialNetwork(
     val type: SocialNetworkType,

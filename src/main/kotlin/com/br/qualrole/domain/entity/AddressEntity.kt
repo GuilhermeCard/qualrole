@@ -6,8 +6,11 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import org.hibernate.envers.AuditTable
 import org.hibernate.envers.Audited
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "address")
@@ -32,6 +35,13 @@ data class AddressEntity(
     var city: String,
 
     @Column(name = "state")
-    var state: String
+    var state: String,
 
-): BaseEntity()
+    @CreationTimestamp
+    @Column(name = "dat_creation")
+    var datCreation: LocalDateTime? = null,
+
+    @UpdateTimestamp
+    @Column(name = "dat_update")
+    var datUpdate: LocalDateTime? = null
+)

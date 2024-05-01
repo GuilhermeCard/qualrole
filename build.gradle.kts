@@ -41,7 +41,6 @@ dependencies {
 
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
 
-    testImplementation("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")

@@ -107,13 +107,23 @@ class QueueControllerTest : IntegrationTest() {
             queueRepository.save(QueueBuilder.giveQueueEntity(companyEntity))
         }
 
+        val queueList = queueRepository.findAll().sortedBy { it.id }
+
         val response = mockMvc.get(QUEUE_PATH)
             .andExpect { status { isOk() } }
-            .andReturn().response.contentAsString
+            .andReturn().response.getContentAsString(Charsets.UTF_8)
             .let { objectMapper.readValue<List<QueueDTO>>(it) }
+            .sortedBy { it.id }
 
-        assertThat(response).isNotEmpty
-        assertThat(response).size().isEqualTo(3)
+        assertThat(response.size).isEqualTo(queueList.size)
+        response.forEachIndexed { i, queueDTO ->
+            assertThat(queueDTO.id).isEqualTo(queueList[i].id)
+            assertThat(queueDTO.presentPeople).isEqualTo(queueList[i].presentPeople)
+            assertThat(queueDTO.maxCapacity).isEqualTo(queueList[i].maxCapacity)
+            assertThat(queueDTO.company?.id).isEqualTo(queueList[i].company.id)
+            assertThat(queueDTO.company?.name).isEqualTo(queueList[i].company.name)
+            assertThat(queueDTO.company?.document).isEqualTo(queueList[i].company.document)
+        }
     }
 
     @Test

@@ -9,8 +9,11 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import org.hibernate.envers.AuditTable
 import org.hibernate.envers.Audited
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "queue")
@@ -30,6 +33,13 @@ data class QueueEntity(
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
-    var company: CompanyEntity
+    var company: CompanyEntity,
 
-): BaseEntity()
+    @CreationTimestamp
+    @Column(name = "dat_creation")
+    var datCreation: LocalDateTime? = null,
+
+    @UpdateTimestamp
+    @Column(name = "dat_update")
+    var datUpdate: LocalDateTime? = null
+)

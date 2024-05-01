@@ -28,16 +28,22 @@ class AddressControllerTest : IntegrationTest() {
         val addressEntity = AddressBuilder.giveAddressEntity()
         addressRepository.save(addressEntity)
 
+        val addressList = addressRepository.findAll().sortedBy { it.id }
+
         val response = mockMvc.get(ADDRESS_PATH)
             .andExpect { status { isOk() } }
             .andReturn().response.contentAsString
             .let { objectMapper.readValue<List<AddressDTO>>(it) }
+            .sortedBy { it.id }
 
-        assertThat(response).size().isOne
-        assertThat(response[0].streetName).isEqualTo(addressEntity.streetName)
-        assertThat(response[0].state).isEqualTo(addressEntity.state)
-        assertThat(response[0].city).isEqualTo(addressEntity.city)
-        assertThat(response[0].district).isEqualTo(addressEntity.district)
+        assertThat(response.size).isEqualTo(addressList.size)
+        response.forEachIndexed { i, addressDTO ->
+            assertThat(addressDTO.streetName).isEqualTo(addressList[i].streetName)
+            assertThat(addressDTO.state).isEqualTo(addressList[i].state)
+            assertThat(addressDTO.city).isEqualTo(addressList[i].city)
+            assertThat(addressDTO.district).isEqualTo(addressList[i].district)
+        }
+
     }
 
     @Test
@@ -76,8 +82,8 @@ class AddressControllerTest : IntegrationTest() {
 
     @Test
     fun `must return address empty list`() {
-        val response = mockMvc.get(ADDRESS_PATH)
-            .andExpect { status { isOk() } }
+        val response = mockMvc.perform(get(ADDRESS_PATH).queryParam("id", System.nanoTime().toString()))
+            .andExpect { status().isOk }
             .andReturn().response.contentAsString
             .let { objectMapper.readValue<List<AddressDTO>>(it) }
 

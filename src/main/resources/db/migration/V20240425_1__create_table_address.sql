@@ -18,6 +18,8 @@ CREATE TABLE address_audit (
    zip_code VARCHAR(80) NOT NULL,
    city VARCHAR(80) NOT NULL,
    state VARCHAR(80) NOT NULL,
+   dat_creation TIMESTAMP NOT NULL,
+   dat_update TIMESTAMP NOT NULL,
 
    CONSTRAINT fk_revinfo_address_audit FOREIGN KEY (rev) REFERENCES revinfo(rev)
 );
