@@ -2,6 +2,7 @@ package com.br.qualrole.service.company
 
 import br.com.caelum.stella.format.CNPJFormatter
 import br.com.caelum.stella.validation.CNPJValidator
+import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.company.request.CompanyRequest
 import com.br.qualrole.domain.repository.CompanyRepository
 import com.br.qualrole.exception.ResourceAlreadyExistsException
@@ -18,6 +19,7 @@ class CompanyService(
     val repository: CompanyRepository
 ) {
 
+    @LogInfo(logParameters = true)
     fun create(companyRequest: CompanyRequest) = companyRequest
         .apply { this.document = CNPJFormatter().unformat(this.document) }
         .let { CNPJValidator().assertValid(it.document) }
@@ -28,6 +30,7 @@ class CompanyService(
             .let { repository.save(mapper.companyDTOToEntity(it)) }
             .let { mapper.companyEntityToDTO(it) }
 
+    @LogInfo(logParameters = true)
     fun getCompanyById(id: Long) =
         repository.findById(id).getOrNull()?.let { mapper.companyEntityToDTO(it) }
             ?: throw ResourceNotFoundException("Company not found with id: $id")

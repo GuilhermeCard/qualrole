@@ -1,5 +1,6 @@
 package com.br.qualrole.service.address
 
+import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.address.request.AddressFilterRequest
 import com.br.qualrole.domain.repository.AddressRepository
 import com.br.qualrole.dto.AddressDTO
@@ -16,10 +17,12 @@ class AddressService(
     val addressRepository: AddressRepository
 ) {
 
+    @LogInfo(logParameters = true)
     fun create(body: AddressDTO) = mapper.addressDTOtoEntity(body)
         .let { addressRepository.save(it) }
         .let { mapper.addressEntityToDTO(it) }
 
+    @LogInfo(logParameters = true)
     fun getByFilterSpecification(
         filter: AddressFilterRequest,
         pageable: Pageable
@@ -28,6 +31,7 @@ class AddressService(
         return addressRepository.findAll(specification, pageable).map { mapper.addressEntityToDTO(it) }.content
     }
 
+    @LogInfo(logParameters = true)
     fun getById(id: Long) = addressRepository
         .findById(id)
         .getOrElse { throw ResourceNotFoundException("Address not found with id: $id") }

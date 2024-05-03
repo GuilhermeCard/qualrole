@@ -1,5 +1,6 @@
 package com.br.qualrole.service.queue
 
+import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.controller.queue.request.QueueRequest
 import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
@@ -23,6 +24,7 @@ class QueueService(
     val repository: QueueRepository
 ) {
 
+    @LogInfo(logParameters = true)
     fun create(request: QueueRequest): QueueDTO {
         verifyQueueAlreadyExists(request)
         val company = companyService.getCompanyById(request.companyId)
@@ -31,6 +33,7 @@ class QueueService(
         return repository.save(mapper.queueDTOToEntity(companyDTO)).let { mapper.queueEntityToDTO(it) }
     }
 
+    @LogInfo(logParameters = true)
     fun updateSeats(queueId: Long, request: UpdateSeatsRequest): QueueDTO {
         val queue = repository.findById(queueId).getOrNull()
             ?: throw ResourceNotFoundException("Queue not found with id: $queueId")
@@ -49,6 +52,7 @@ class QueueService(
             ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.company.id}") }
     }
 
+    @LogInfo(logParameters = true)
     fun getAllQueues(
         filterRequest: QueueFilterRequest,
         pageable: Pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "company.name")
