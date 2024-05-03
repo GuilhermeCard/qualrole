@@ -1,6 +1,6 @@
 package com.br.qualrole.domain.entity.audit
 
-import com.br.qualrole.listner.CustomRevisionListener
+import com.br.qualrole.listener.CustomRevisionListener
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

@@ -1,4 +1,4 @@
-package com.br.qualrole.listner
+package com.br.qualrole.listener
 
 import com.br.qualrole.domain.entity.audit.RevisionEntity
 import org.hibernate.envers.RevisionListener
