@@ -1,27 +1,17 @@
-# Estágio 1: Construir o aplicativo com Gradle
-FROM gradle:8.7.0-jdk21-alpine AS builder
+FROM ubuntu:latest AS build
+
+RUN apt-get update
+RUN apt-get install openjdk-21-jdk -y
 
 WORKDIR /app
+COPY . .
 
-# Copiar os arquivos Gradle
-COPY build.gradle.kts settings.gradle.kts ./
+RUN ./gradlew bootJar --no-daemon
 
-# Copiar o código-fonte
-COPY src ./src
+FROM openjdk-21-jdk-slim
 
-# Construir o aplicativo
-RUN gradle build --no-daemon
-
-# Estágio 2: Criar a imagem final
-FROM gradle:8.7.0-jdk21-alpine
-
-WORKDIR /app
-
-# Copiar o arquivo JAR construído do estágio anterior
-COPY --from=builder /app/build/libs/*.jar ./app.jar
-
-# Expor a porta em que o aplicativo está em execução (se aplicável)
 EXPOSE 8080
 
-# Comando de entrada para executar o aplicativo quando o contêiner for iniciado
+COPY --from=build /build/libs/*.jar app.jar
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
