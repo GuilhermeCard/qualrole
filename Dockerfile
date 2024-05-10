@@ -1,13 +1,16 @@
 FROM gradle:8.7.0-jdk21-alpine AS builder
 
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/app
+WORKDIR /app
 
-RUN gradle build --no-daemon
+COPY build.gradle settings.gradle gradle.properties .
 
-FROM gradle:8.7.0-jdk21-alpine
+RUN gradle build
 
-COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=builder /app/build/libs/*.jar .
 
 EXPOSE 8080
 
