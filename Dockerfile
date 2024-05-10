@@ -13,7 +13,7 @@ COPY src ./src
 RUN gradle build --no-daemon
 
 # Estágio 2: Criar a imagem final
-FROM adoptopenjdk/openjdk21:alpine-slim
+FROM gradle:8.7.0-jdk21-alpine
 
 WORKDIR /app
 
