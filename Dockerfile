@@ -1,8 +1,5 @@
 # Estágio de construção
-FROM ubuntu:latest AS builder
-
-RUN apt-get update
-RUN apt-get install gradle:8.7.0-jdk21-alpine -y
+FROM gradle:8.7.0-jdk21-alpine AS builder
 
 # Copiar todos os arquivos do projeto
 COPY . .
