@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/qualrole_database?currentSchema=qualrole
+#    url: jdbc:postgresql://localhost:5432/qualrole_database?currentSchema=qualrole
+    url: ${database_url}
     username: ${database_user}
     password: ${database_password}
     driver-class-name: org.postgresql.Driver
