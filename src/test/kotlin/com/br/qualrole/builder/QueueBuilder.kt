@@ -12,8 +12,7 @@ object QueueBuilder {
         company = companyEntity
     )
 
-    fun giveQueueRequest(id: Long? = null, companyId: Long) = QueueRequest(
-        id = id,
+    fun giveQueueRequest(companyId: Long) = QueueRequest(
         presentPeople = 50L,
         maxCapacity = 100L,
         companyId = companyId,

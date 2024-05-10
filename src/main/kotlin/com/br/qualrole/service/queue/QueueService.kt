@@ -8,7 +8,8 @@ import com.br.qualrole.domain.repository.QueueRepository
 import com.br.qualrole.dto.QueueDTO
 import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
-import com.br.qualrole.mapper.QueueMapper
+import com.br.qualrole.mapper.toQueueDTO
+import com.br.qualrole.mapper.toQueueEntity
 import com.br.qualrole.service.company.CompanyService
 import com.br.qualrole.service.queue.specification.QueueSpecification
 import org.springframework.data.domain.PageRequest
@@ -19,7 +20,6 @@ import kotlin.jvm.optionals.getOrNull
 
 @Service
 class QueueService(
-    val mapper: QueueMapper,
     val companyService: CompanyService,
     val repository: QueueRepository
 ) {
@@ -27,10 +27,10 @@ class QueueService(
     @LogInfo(logParameters = true)
     fun create(request: QueueRequest): QueueDTO {
         verifyQueueAlreadyExists(request)
-        val company = companyService.getCompanyById(request.companyId)
-        val companyDTO = mapper.queueRequestToDTO(request).apply { this.company = company }
+        val companyDTO = companyService.getCompanyById(request.companyId)
+        val queueDTO = request.toQueueDTO(companyDTO)
 
-        return repository.save(mapper.queueDTOToEntity(companyDTO)).let { mapper.queueEntityToDTO(it) }
+        return repository.save(queueDTO.toQueueEntity()).toQueueDTO()
     }
 
     @LogInfo(logParameters = true)
@@ -40,14 +40,10 @@ class QueueService(
 
         request.maxCapacity?.let { queue.maxCapacity = it }
         queue.presentPeople = request.presentPeople
-        return repository.save(queue).let { mapper.queueEntityToDTO(it) }
+        return repository.save(queue).toQueueDTO()
     }
 
     private fun verifyQueueAlreadyExists(request: QueueRequest) {
-        request.id
-            ?.let { repository.findById(it).getOrNull() }
-            ?.let { throw ResourceAlreadyExistsException("Queue already exists with id: ${it.id}") }
-
         repository.findByCompanyId(request.companyId)
             ?.let { throw ResourceAlreadyExistsException("Queue already exists with companyId: ${it.company.id}") }
     }
@@ -58,6 +54,6 @@ class QueueService(
         pageable: Pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "company.name")
     ): List<QueueDTO> =
         repository.findAll(QueueSpecification.searchWithSpecification(filterRequest), pageable)
-            .map { mapper.queueEntityToDTO(it) }.content
+            .map { it.toQueueDTO() }.content
 
 }

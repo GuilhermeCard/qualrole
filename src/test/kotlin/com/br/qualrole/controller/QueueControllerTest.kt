@@ -40,26 +40,7 @@ class QueueControllerTest : IntegrationTest() {
         assertThat(response.id).isNotNull()
         assertThat(response.maxCapacity).isEqualTo(queueRequest.maxCapacity)
         assertThat(response.presentPeople).isEqualTo(queueRequest.presentPeople)
-        assertThat(response.company!!.document).isEqualTo(companyEntity.document)
-    }
-
-    @Test
-    fun `should launch ResourceAlreadyExistsException when there is already a queue registered with this id`() {
-        val addressEntity = addressRepository.save(AddressBuilder.giveAddressEntity())
-        val companyEntity = companyRepository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity))
-        val queueEntity = queueRepository.save(QueueBuilder.giveQueueEntity(companyEntity))
-        val queueRequest = QueueBuilder.giveQueueRequest(id = queueEntity.id, companyId = companyEntity.id!!)
-
-        val request = post("$QUEUE_PATH/create")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(queueRequest))
-
-        val exception = mockMvc.perform(request)
-            .andExpect(status().isUnprocessableEntity)
-            .andReturn().resolvedException
-
-        assertThat(exception).isExactlyInstanceOf(ResourceAlreadyExistsException::class.java)
-        assertThat(exception).hasMessage("Queue already exists with id: ${queueRequest.id}")
+        assertThat(response.company.document).isEqualTo(companyEntity.document)
     }
 
     @Test
@@ -120,9 +101,9 @@ class QueueControllerTest : IntegrationTest() {
             assertThat(queueDTO.id).isEqualTo(queueList[i].id)
             assertThat(queueDTO.presentPeople).isEqualTo(queueList[i].presentPeople)
             assertThat(queueDTO.maxCapacity).isEqualTo(queueList[i].maxCapacity)
-            assertThat(queueDTO.company?.id).isEqualTo(queueList[i].company.id)
-            assertThat(queueDTO.company?.name).isEqualTo(queueList[i].company.name)
-            assertThat(queueDTO.company?.document).isEqualTo(queueList[i].company.document)
+            assertThat(queueDTO.company.id).isEqualTo(queueList[i].company.id)
+            assertThat(queueDTO.company.name).isEqualTo(queueList[i].company.name)
+            assertThat(queueDTO.company.document).isEqualTo(queueList[i].company.document)
         }
     }
 
@@ -169,8 +150,8 @@ class QueueControllerTest : IntegrationTest() {
             .let { objectMapper.readValue<List<QueueDTO>>(it) }
 
         assertThat(response).size().isOne
-        assertThat(response[0].company!!.id).isEqualTo(companyEntity.id)
-        assertThat(response[0].company!!.name).isEqualTo(companyEntity.name)
-        assertThat(response[0].company!!.document).isEqualTo(companyEntity.document)
+        assertThat(response[0].company.id).isEqualTo(companyEntity.id)
+        assertThat(response[0].company.name).isEqualTo(companyEntity.name)
+        assertThat(response[0].company.document).isEqualTo(companyEntity.document)
     }
 }

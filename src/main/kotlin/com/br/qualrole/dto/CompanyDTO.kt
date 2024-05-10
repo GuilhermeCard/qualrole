@@ -1,14 +1,23 @@
 package com.br.qualrole.dto
 
 import com.br.qualrole.domain.entity.SocialNetwork
+import com.br.qualrole.enums.CategoryEnum
+import java.net.URL
+import java.time.LocalTime
 
 data class CompanyDTO(
     val id: Long? = null,
-    var document: String,
+    val document: String,
     val name: String,
-    var address: AddressDTO? = null,
+    val address: AddressDTO,
     val phone: String,
-    val socialNetwork: List<SocialNetwork?>,
+    val socialNetwork: List<SocialNetwork>,
     val addressNumber: String,
-    val addressComplement: String? = null
+    val addressComplement: String?,
+    val category: CategoryEnum,
+    val logoImageUrl: URL,
+    val companyImages: List<URL>,
+    val startOpeningHour: LocalTime,
+    val endOpeningHour: LocalTime,
+    val operatingDays: List<Int>,
 )

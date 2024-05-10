@@ -2,12 +2,21 @@ package com.br.qualrole.mapper
 
 import com.br.qualrole.domain.entity.AddressEntity
 import com.br.qualrole.dto.AddressDTO
-import org.mapstruct.Mapper
 
-@Mapper
-interface AddressMapper {
+fun AddressEntity.toAddressDTO() = AddressDTO(
+    id = this.id,
+    district = this.district,
+    streetName = this.streetName,
+    zipCode = this.zipCode,
+    city = this.city,
+    state = this.state
+)
 
-    fun addressEntityToDTO(addressEntity: AddressEntity): AddressDTO
-
-    fun addressDTOtoEntity(addressDTO: AddressDTO): AddressEntity
-}
+fun AddressDTO.toAddressEntity() = AddressEntity(
+    id = this.id,
+    district = this.district,
+    streetName = this.streetName,
+    zipCode = this.zipCode,
+    city = this.city,
+    state = this.state
+)

@@ -15,3 +15,8 @@ spring:
         connection.release_mode: after_transaction
         jdbc:
           time_zone: America/Sao_Paulo
+          default_schema: qualrole
+
+qual-role:
+  default:
+    company_logo_url: https://cdn.discordapp.com/attachments/400057336535973929/1237991494535614474/4220325-silhueta-do-perfil-do-usuario-gratis-vetor.png?ex=663da8ed&is=663c576d&hm=c79b3a9b5dad185af978c158e777e266d170da9d080a22df555ee9b81067408a&

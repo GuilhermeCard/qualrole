@@ -2,18 +2,25 @@ package com.br.qualrole.mapper
 
 import com.br.qualrole.controller.queue.request.QueueRequest
 import com.br.qualrole.domain.entity.QueueEntity
+import com.br.qualrole.dto.CompanyDTO
 import com.br.qualrole.dto.QueueDTO
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 
-@Mapper
-interface QueueMapper {
+fun QueueEntity.toQueueDTO() = QueueDTO(
+    id = this.id,
+    presentPeople = this.presentPeople,
+    maxCapacity = this.maxCapacity,
+    company = this.company.toCompanyDTO(),
+    updatedAt = this.datUpdate
+)
 
-    @Mapping(source = "datUpdate", target = "updatedAt")
-    fun queueEntityToDTO(queueEntity: QueueEntity): QueueDTO
+fun QueueDTO.toQueueEntity() = QueueEntity(
+    presentPeople = this.presentPeople,
+    maxCapacity = this.maxCapacity,
+    company = this.company.toCompanyEntity()
+)
 
-    fun queueDTOToEntity(queueDTO: QueueDTO): QueueEntity
-
-    fun queueRequestToDTO(request: QueueRequest): QueueDTO
-
-}
+fun QueueRequest.toQueueDTO(companyDTO: CompanyDTO) = QueueDTO(
+    presentPeople = this.presentPeople,
+    maxCapacity = this.maxCapacity,
+    company = companyDTO
+)

@@ -4,8 +4,8 @@ import java.time.LocalDateTime
 
 data class QueueDTO(
     val id: Long? = null,
-    val presentPeople: Long? = 0L,
+    val presentPeople: Long,
     val maxCapacity: Long,
-    var company: CompanyDTO? = null,
+    var company: CompanyDTO,
     val updatedAt: LocalDateTime? = null
 )

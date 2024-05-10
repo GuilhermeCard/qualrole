@@ -5,8 +5,10 @@ import com.br.qualrole.controller.company.request.CompanyRequest
 import com.br.qualrole.domain.entity.AddressEntity
 import com.br.qualrole.domain.entity.CompanyEntity
 import com.br.qualrole.domain.entity.SocialNetwork
+import com.br.qualrole.enums.CategoryEnum
 import com.br.qualrole.enums.SocialNetworkType
 import java.net.URI
+import java.time.LocalTime
 
 object CompanyBuilder {
     fun giveCompanyEntity(
@@ -27,7 +29,13 @@ object CompanyBuilder {
                 link = URI("https://instagram.com.br").toURL()
             )
         ),
-        addressNumber = addressNumber ?: "1500"
+        addressNumber = addressNumber ?: "1500",
+        category = CategoryEnum.PUB,
+        companyImages = listOf(URI("https://instagram.com.br/companyimage").toURL()),
+        startOpeningHour = LocalTime.of(8, 0),
+        endOpeningHour = LocalTime.of(18, 0),
+        operatingDays = listOf(1, 2, 3, 4, 5),
+        logoImageUrl = URI("https://instagram.com.br/companyimage").toURL(),
     )
 
     fun giveCompanyRequest(document: String? = null, addressId: Long) = CompanyRequest(
@@ -36,7 +44,12 @@ object CompanyBuilder {
         addressId = addressId,
         phone = "31983696712",
         socialNetwork = emptyList(),
-        addressNumber = "355"
+        addressNumber = "355",
+        category = CategoryEnum.RESTAURANT,
+        companyImages = emptyList(),
+        startOpeningHour = LocalTime.of(8, 0),
+        endOpeningHour = LocalTime.of(22, 0),
+        operatingDays = listOf(1, 2, 3, 4, 5)
     )
 
 }

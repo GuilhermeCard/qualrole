@@ -22,7 +22,6 @@ repositories {
     mavenCentral()
 }
 
-val mapStructVersion = "1.4.2.Final"
 val testcontainersVersion = "1.19.7"
 val postgresVersion = "42.7.3"
 
@@ -34,12 +33,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
-    implementation("org.mapstruct:mapstruct:$mapStructVersion")
     implementation("io.github.microutils:kotlin-logging:3.0.5")
     implementation("br.com.caelum.stella:caelum-stella-core:2.1.6")
     implementation("org.hibernate:hibernate-envers:6.5.0.Final")
-
-    kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 

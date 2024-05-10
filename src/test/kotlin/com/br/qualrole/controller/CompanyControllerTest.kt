@@ -81,7 +81,7 @@ class CompanyControllerTest : IntegrationTest() {
 
         assertThat(response.id).isNotNull()
         assertThat(response.document).isEqualTo(companyRequest.document)
-        assertThat(response.address?.id).isEqualTo(companyRequest.addressId)
+        assertThat(response.address.id).isEqualTo(companyRequest.addressId)
         assertThat(response.phone).isEqualTo(companyRequest.phone)
         assertThat(response.socialNetwork).isEqualTo(companyRequest.socialNetwork)
         assertThat(response.addressNumber).isEqualTo(companyRequest.addressNumber)
@@ -104,7 +104,7 @@ class CompanyControllerTest : IntegrationTest() {
 
         assertThat(response.id).isNotNull()
         assertThat(response.document).isEqualTo(companyRequest.document)
-        assertThat(response.address?.id).isEqualTo(companyRequest.addressId)
+        assertThat(response.address.id).isEqualTo(companyRequest.addressId)
         assertThat(response.phone).isEqualTo(companyRequest.phone)
         assertThat(response.socialNetwork).isEqualTo(companyRequest.socialNetwork)
         assertThat(response.addressNumber).isEqualTo(companyRequest.addressNumber)

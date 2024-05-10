@@ -4,11 +4,10 @@ import com.br.qualrole.IntegrationTest
 import com.br.qualrole.builder.AddressBuilder
 import com.br.qualrole.controller.address.request.AddressFilterRequest
 import com.br.qualrole.dto.AddressDTO
-import com.br.qualrole.mapper.AddressMapper
+import com.br.qualrole.mapper.toAddressDTO
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
@@ -19,9 +18,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 private const val ADDRESS_PATH = "/address"
 
 class AddressControllerTest : IntegrationTest() {
-
-    @Autowired
-    lateinit var mapper: AddressMapper
 
     @Test
     fun `must return all addresses`() {
@@ -92,7 +88,7 @@ class AddressControllerTest : IntegrationTest() {
 
     @Test
     fun `must be created address`() {
-        val addressDTO = AddressBuilder.giveAddressEntity().let { mapper.addressEntityToDTO(it) }
+        val addressDTO = AddressBuilder.giveAddressEntity().toAddressDTO()
 
         val request = post("$ADDRESS_PATH/create", addressDTO)
             .content(objectMapper.writeValueAsString(addressDTO))

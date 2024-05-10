@@ -1,10 +1,15 @@
 package com.br.qualrole.domain.entity
 
+import com.br.qualrole.converter.IntListConverter
+import com.br.qualrole.converter.SocialNetworkListConverter
 import com.br.qualrole.converter.StringListConverter
+import com.br.qualrole.enums.CategoryEnum
 import com.br.qualrole.enums.SocialNetworkType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -18,6 +23,7 @@ import org.hibernate.envers.AuditTable
 import org.hibernate.envers.Audited
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Entity
 @Table(name = "company")
@@ -43,14 +49,35 @@ data class CompanyEntity(
     var phone: String,
 
     @Column(name = "social_network")
-    @Convert(converter = StringListConverter::class)
-    var socialNetwork: List<SocialNetwork?>,
+    @Convert(converter = SocialNetworkListConverter::class)
+    var socialNetwork: List<SocialNetwork>,
 
     @Column(name = "address_number")
     var addressNumber: String,
 
     @Column(name = "address_complement")
     var addressComplement: String? = null,
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    var category: CategoryEnum,
+
+    @Column(name = "logo_image_url")
+    var logoImageUrl: URL,
+
+    @Column(name = "company_images")
+    @Convert(converter = StringListConverter::class)
+    var companyImages: List<URL>,
+
+    @Column(name = "start_opening_hour")
+    var startOpeningHour: LocalTime,
+
+    @Column(name = "end_opening_hour")
+    var endOpeningHour: LocalTime,
+
+    @Column(name = "operating_days")
+    @Convert(converter = IntListConverter::class)
+    var operatingDays: List<Int>,
 
     @CreationTimestamp
     @Column(name = "dat_creation")

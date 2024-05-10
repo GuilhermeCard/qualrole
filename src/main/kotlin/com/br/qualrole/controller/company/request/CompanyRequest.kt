@@ -1,14 +1,22 @@
 package com.br.qualrole.controller.company.request
 
 import com.br.qualrole.domain.entity.SocialNetwork
+import com.br.qualrole.enums.CategoryEnum
+import java.net.URL
+import java.time.LocalTime
 
 data class CompanyRequest(
-    val id: Long? = null,
     var document: String,
     val name: String,
     val addressId: Long,
     val phone: String,
-    val socialNetwork: List<SocialNetwork?>,
+    val socialNetwork: List<SocialNetwork>,
     val addressNumber: String,
-    val addressComplement: String? = null
+    val addressComplement: String? = null,
+    val category: CategoryEnum,
+    var logoImageUrl: URL? = null,
+    val companyImages: List<URL>,
+    var startOpeningHour: LocalTime,
+    var endOpeningHour: LocalTime,
+    var operatingDays: List<Int>
 )

@@ -5,33 +5,51 @@ import br.com.caelum.stella.validation.CNPJValidator
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.company.request.CompanyRequest
 import com.br.qualrole.domain.repository.CompanyRepository
+import com.br.qualrole.dto.CompanyDTO
 import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
-import com.br.qualrole.mapper.CompanyMapper
+import com.br.qualrole.mapper.toCompanyDTO
+import com.br.qualrole.mapper.toCompanyEntity
 import com.br.qualrole.service.address.AddressService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.net.URI
 import kotlin.jvm.optionals.getOrNull
 
 @Service
 class CompanyService(
-    val mapper: CompanyMapper,
     val addressService: AddressService,
-    val repository: CompanyRepository
+    val repository: CompanyRepository,
+    @Value("\${qual-role.default.company_logo_url}")
+    val defaultLogoUrl: String
 ) {
 
     @LogInfo(logParameters = true)
-    fun create(companyRequest: CompanyRequest) = companyRequest
-        .apply { this.document = CNPJFormatter().unformat(this.document) }
-        .let { CNPJValidator().assertValid(it.document) }
-        .let { repository.findFirstByDocument(companyRequest.document) }
-        ?.let { throw ResourceAlreadyExistsException("Company already exists with document: ${it.document}") }
-        ?: addressService.getById(companyRequest.addressId)
-            .let { mapper.companyRequestToDTO(companyRequest).apply { this.address = it } }
-            .let { repository.save(mapper.companyDTOToEntity(it)) }
-            .let { mapper.companyEntityToDTO(it) }
+    fun create(companyRequest: CompanyRequest): CompanyDTO {
+        val document = unFormatAndValidateDocument(companyRequest.document)
+
+        repository.findFirstByDocument(document)?.let {
+            throw ResourceAlreadyExistsException("Company already exists with document: ${it.document}")
+        }
+
+        val address = addressService.getById(companyRequest.addressId)
+
+        val companyDTO = companyRequest
+            .apply { this.logoImageUrl = this.logoImageUrl ?: URI(defaultLogoUrl).toURL() }
+            .toCompanyDTO(address)
+
+        return repository.save(companyDTO.toCompanyEntity()).toCompanyDTO()
+
+    }
 
     @LogInfo(logParameters = true)
     fun getCompanyById(id: Long) =
-        repository.findById(id).getOrNull()?.let { mapper.companyEntityToDTO(it) }
+        repository.findById(id).getOrNull()?.toCompanyDTO()
             ?: throw ResourceNotFoundException("Company not found with id: $id")
+
+    private fun unFormatAndValidateDocument(document: String): String {
+        val result = CNPJFormatter().unformat(document)
+        CNPJValidator().assertValid(result)
+        return result
+    }
 }
