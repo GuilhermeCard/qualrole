@@ -1,20 +1,14 @@
-# Estágio de construção
 FROM gradle:8.7.0-jdk21-alpine AS builder
 
-# Copiar todos os arquivos do projeto
-COPY . .
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/app
 
-# Executar o comando Gradle para construir a aplicação
-RUN gradle build
+RUN gradle build --no-daemon
 
-# Estágio final
 FROM gradle:8.7.0-jdk21-alpine
 
-# Expor a porta necessária para a aplicação
+COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
+
 EXPOSE 8080
 
-# Copiar o arquivo JAR gerado no estágio de construção
-COPY --from=builder /build/libs/*.jar app.jar
-
-# Comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
