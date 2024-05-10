@@ -4,7 +4,7 @@ FROM gradle:8.7.0-jdk21-alpine AS builder
 WORKDIR /app
 
 # Copiar os arquivos Gradle
-COPY build.gradle settings.gradle gradle.properties ./
+COPY build.gradle.kts settings.gradle.kts ./
 
 # Copiar o código-fonte
 COPY src ./src
