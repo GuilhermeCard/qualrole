@@ -8,7 +8,6 @@ import com.br.qualrole.mapper.toAddressDTO
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -34,10 +33,7 @@ class AddressControllerTest : IntegrationTest() {
 
         assertThat(response.size).isEqualTo(addressList.size)
         response.forEachIndexed { i, addressDTO ->
-            assertThat(addressDTO.streetName).isEqualTo(addressList[i].streetName)
-            assertThat(addressDTO.state).isEqualTo(addressList[i].state)
-            assertThat(addressDTO.city).isEqualTo(addressList[i].city)
-            assertThat(addressDTO.district).isEqualTo(addressList[i].district)
+            assertThat(addressDTO).usingRecursiveComparison().isEqualTo(addressList[i])
         }
 
     }
@@ -70,10 +66,7 @@ class AddressControllerTest : IntegrationTest() {
             .let { objectMapper.readValue<List<AddressDTO>>(it) }
 
         assertThat(response).size().isOne
-        assertThat(response[0].streetName).isEqualTo(addressEntity.streetName)
-        assertThat(response[0].state).isEqualTo(addressEntity.state)
-        assertThat(response[0].city).isEqualTo(addressEntity.city)
-        assertThat(response[0].district).isEqualTo(addressEntity.district)
+        assertThat(response[0]).usingRecursiveComparison().isEqualTo(addressEntity)
     }
 
     @Test
@@ -94,15 +87,16 @@ class AddressControllerTest : IntegrationTest() {
             .content(objectMapper.writeValueAsString(addressDTO))
             .contentType(MediaType.APPLICATION_JSON)
 
-        val result = mockMvc.perform(request).andReturn().response
-        val response = objectMapper.readValue<AddressDTO>(result.contentAsString)
+        val response = mockMvc.perform(request)
+            .andExpect(status().isCreated)
+            .andReturn().response.contentAsString
+            .let { objectMapper.readValue<AddressDTO>(it) }
 
-        assertThat(result.status).isEqualTo(HttpStatus.CREATED.value())
+        assertThat(response)
+            .usingRecursiveComparison()
+            .ignoringExpectedNullFields()
+            .isEqualTo(addressDTO)
+
         assertThat(response.id).isNotNull()
-        assertThat(addressDTO.district).isEqualTo(addressDTO.district)
-        assertThat(addressDTO.streetName).isEqualTo(addressDTO.streetName)
-        assertThat(addressDTO.city).isEqualTo(addressDTO.city)
-        assertThat(addressDTO.zipCode).isEqualTo(addressDTO.zipCode)
-        assertThat(addressDTO.state).isEqualTo(addressDTO.state)
     }
 }
