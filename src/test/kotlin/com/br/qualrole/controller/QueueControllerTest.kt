@@ -5,7 +5,7 @@ import com.br.qualrole.builder.AddressBuilder
 import com.br.qualrole.builder.CompanyBuilder
 import com.br.qualrole.builder.QueueBuilder
 import com.br.qualrole.controller.queue.request.QueueFilterRequest
-import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
+import com.br.qualrole.controller.queue.request.UpdateOperatingDataRequest
 import com.br.qualrole.dto.QueueDTO
 import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
@@ -65,7 +65,7 @@ class QueueControllerTest : IntegrationTest() {
     @Test
     fun `ResourceNotFoundException should be thrown when the queue does not exist`() {
         val queueId = System.nanoTime()
-        val updateSeatsRequest = UpdateSeatsRequest(presentPeople = 10)
+        val updateSeatsRequest = UpdateOperatingDataRequest(presentPeople = 10)
 
         val request = put("$QUEUE_PATH/{queueId}", queueId)
             .contentType(MediaType.APPLICATION_JSON)
@@ -113,7 +113,7 @@ class QueueControllerTest : IntegrationTest() {
         val companyEntity = companyRepository.save(CompanyBuilder.giveCompanyEntity(address = addressEntity))
 
         val queueEntity = queueRepository.save(QueueBuilder.giveQueueEntity(companyEntity))
-        val updateSeatsRequest = UpdateSeatsRequest(presentPeople = 20)
+        val updateSeatsRequest = UpdateOperatingDataRequest(presentPeople = 20, isOpen = true)
 
         val request = put("$QUEUE_PATH/{queueId}", queueEntity.id)
             .contentType(MediaType.APPLICATION_JSON)

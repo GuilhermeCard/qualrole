@@ -13,6 +13,7 @@ CREATE TABLE company (
   start_opening_hour TIME NOT NULL,
   end_opening_hour TIME NOT NULL,
   operating_days VARCHAR(255) NOT NULL,
+  is_open BOOLEAN NOT NULL,
   dat_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   dat_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -36,6 +37,7 @@ CREATE TABLE company_audit (
   start_opening_hour TIME NOT NULL,
   end_opening_hour TIME NOT NULL,
   operating_days VARCHAR(255) NOT NULL,
+  is_open BOOLEAN NOT NULL,
   dat_creation TIMESTAMP NOT NULL,
   dat_update TIMESTAMP NOT NULL,
 

@@ -4,6 +4,7 @@ import br.com.caelum.stella.format.CNPJFormatter
 import br.com.caelum.stella.validation.CNPJValidator
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.company.request.CompanyRequest
+import com.br.qualrole.domain.entity.CompanyEntity
 import com.br.qualrole.domain.repository.CompanyRepository
 import com.br.qualrole.dto.CompanyDTO
 import com.br.qualrole.exception.ResourceAlreadyExistsException
@@ -46,6 +47,8 @@ class CompanyService(
     fun getCompanyById(id: Long) =
         repository.findById(id).getOrNull()?.toCompanyDTO()
             ?: throw ResourceNotFoundException("Company not found with id: $id")
+
+    fun save(companyEntity: CompanyEntity) = repository.save(companyEntity)
 
     private fun unFormatAndValidateDocument(document: String): String {
         val result = CNPJFormatter().unformat(document)

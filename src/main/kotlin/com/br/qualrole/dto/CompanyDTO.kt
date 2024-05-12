@@ -20,4 +20,5 @@ data class CompanyDTO(
     val startOpeningHour: LocalTime,
     val endOpeningHour: LocalTime,
     val operatingDays: List<Int>,
+    val isOpen: Boolean
 )

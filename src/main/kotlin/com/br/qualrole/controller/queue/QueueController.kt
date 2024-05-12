@@ -3,7 +3,7 @@ package com.br.qualrole.controller.queue
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.controller.queue.request.QueueRequest
-import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
+import com.br.qualrole.controller.queue.request.UpdateOperatingDataRequest
 import com.br.qualrole.service.queue.QueueService
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,10 +26,11 @@ class QueueController(val queueService: QueueService) {
     @PutMapping("/{queueId}")
     fun updateSeats(
         @PathVariable queueId: Long,
-        @RequestBody request: UpdateSeatsRequest
-    ) = queueService.updateSeats(queueId, request)
+        @RequestBody request: UpdateOperatingDataRequest
+    ) = queueService.updateOperatingData(queueId, request)
 
     @LogInfo(logParameters = true)
     @GetMapping
-    fun retrieveQueues(filterRequest: QueueFilterRequest, pageable: Pageable) = queueService.getAllQueues(filterRequest, pageable)
+    fun retrieveQueues(filterRequest: QueueFilterRequest, pageable: Pageable) =
+        queueService.getAllQueues(filterRequest, pageable)
 }

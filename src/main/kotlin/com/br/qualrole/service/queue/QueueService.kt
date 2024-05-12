@@ -3,7 +3,7 @@ package com.br.qualrole.service.queue
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.controller.queue.request.QueueRequest
-import com.br.qualrole.controller.queue.request.UpdateSeatsRequest
+import com.br.qualrole.controller.queue.request.UpdateOperatingDataRequest
 import com.br.qualrole.domain.repository.QueueRepository
 import com.br.qualrole.dto.QueueDTO
 import com.br.qualrole.exception.ResourceAlreadyExistsException
@@ -34,11 +34,15 @@ class QueueService(
     }
 
     @LogInfo(logParameters = true)
-    fun updateSeats(queueId: Long, request: UpdateSeatsRequest): QueueDTO {
+    fun updateOperatingData(queueId: Long, request: UpdateOperatingDataRequest): QueueDTO {
         val queue = repository.findById(queueId).getOrNull()
             ?: throw ResourceNotFoundException("Queue not found with id: $queueId")
 
         request.maxCapacity?.let { queue.maxCapacity = it }
+        request.isOpen?.let {
+            queue.company.isOpen = it
+            companyService.save(queue.company)
+        }
         queue.presentPeople = request.presentPeople
         return repository.save(queue).toQueueDTO()
     }

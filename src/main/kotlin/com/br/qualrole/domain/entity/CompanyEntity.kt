@@ -79,6 +79,9 @@ data class CompanyEntity(
     @Convert(converter = IntListConverter::class)
     var operatingDays: List<Int>,
 
+    @Column(name = "is_open")
+    var isOpen: Boolean = false,
+
     @CreationTimestamp
     @Column(name = "dat_creation")
     var datCreation: LocalDateTime? = null,
