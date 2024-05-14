@@ -15,6 +15,7 @@ data class CompanyDTO(
     val addressNumber: String,
     val addressComplement: String?,
     val category: CategoryEnum,
+    val description: String? = null,
     val logoImageUrl: URL,
     val companyImages: List<URL>,
     val startOpeningHour: LocalTime,

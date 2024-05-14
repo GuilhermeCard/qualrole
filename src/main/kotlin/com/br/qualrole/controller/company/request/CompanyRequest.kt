@@ -14,9 +14,11 @@ data class CompanyRequest(
     val addressNumber: String,
     val addressComplement: String? = null,
     val category: CategoryEnum,
+    val description: String? = null,
     var logoImageUrl: URL? = null,
     val companyImages: List<URL>,
     var startOpeningHour: LocalTime,
     var endOpeningHour: LocalTime,
-    var operatingDays: List<Int>
+    var operatingDays: List<Int>,
+    var isOpen: Boolean = false
 )

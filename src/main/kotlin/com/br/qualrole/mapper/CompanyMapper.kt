@@ -14,13 +14,14 @@ fun CompanyRequest.toCompanyDTO(addressDTO: AddressDTO) = CompanyDTO(
     addressNumber = this.addressNumber,
     addressComplement = this.addressComplement,
     category = this.category,
+    description = this.description?.trim(),
     logoImageUrl = this.logoImageUrl
         ?: let { throw IllegalArgumentException("${this::logoImageUrl.name} cannot be null") },
     companyImages = this.companyImages,
     startOpeningHour = this.startOpeningHour,
     endOpeningHour = this.endOpeningHour,
     operatingDays = this.operatingDays,
-    isOpen = false
+    isOpen = this.isOpen
 )
 
 fun CompanyEntity.toCompanyDTO() = CompanyDTO(
@@ -33,6 +34,7 @@ fun CompanyEntity.toCompanyDTO() = CompanyDTO(
     addressNumber = this.addressNumber,
     addressComplement = this.addressComplement,
     category = this.category,
+    description = this.description?.trim(),
     logoImageUrl = this.logoImageUrl,
     companyImages = this.companyImages,
     startOpeningHour = this.startOpeningHour,
@@ -51,6 +53,7 @@ fun CompanyDTO.toCompanyEntity() = CompanyEntity(
     addressNumber = this.addressNumber,
     addressComplement = null,
     category = this.category,
+    description = this.description?.trim(),
     logoImageUrl = this.logoImageUrl,
     companyImages = this.companyImages,
     startOpeningHour = this.startOpeningHour,

@@ -31,6 +31,11 @@ object CompanyBuilder {
         ),
         addressNumber = addressNumber ?: "1500",
         category = CategoryEnum.PUB,
+        description = """
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                      """.trim(),
         companyImages = listOf(URI("https://instagram.com.br/companyimage").toURL()),
         startOpeningHour = LocalTime.of(8, 0),
         endOpeningHour = LocalTime.of(18, 0),
@@ -46,6 +51,11 @@ object CompanyBuilder {
         socialNetwork = emptyList(),
         addressNumber = "355",
         category = CategoryEnum.RESTAURANT,
+        description = """
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                      """.trim(),
         companyImages = emptyList(),
         startOpeningHour = LocalTime.of(8, 0),
         endOpeningHour = LocalTime.of(22, 0),

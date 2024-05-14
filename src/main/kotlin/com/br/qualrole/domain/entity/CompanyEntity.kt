@@ -48,7 +48,7 @@ data class CompanyEntity(
     @Column
     var phone: String,
 
-    @Column(name = "social_network")
+    @Column(name = "social_network", columnDefinition = "TEXT")
     @Convert(converter = SocialNetworkListConverter::class)
     var socialNetwork: List<SocialNetwork>,
 
@@ -62,10 +62,13 @@ data class CompanyEntity(
     @Column
     var category: CategoryEnum,
 
-    @Column(name = "logo_image_url")
+    @Column(columnDefinition = "TEXT")
+    var description: String? = null,
+
+    @Column(name = "logo_image_url", columnDefinition = "TEXT")
     var logoImageUrl: URL,
 
-    @Column(name = "company_images")
+    @Column(name = "company_images", columnDefinition = "TEXT")
     @Convert(converter = StringListConverter::class)
     var companyImages: List<URL>,
 
