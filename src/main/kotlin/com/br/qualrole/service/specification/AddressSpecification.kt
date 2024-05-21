@@ -1,4 +1,4 @@
-package com.br.qualrole.service.address.specification
+package com.br.qualrole.service.specification
 
 import com.br.qualrole.controller.address.request.AddressFilterRequest
 import com.br.qualrole.domain.entity.AddressEntity

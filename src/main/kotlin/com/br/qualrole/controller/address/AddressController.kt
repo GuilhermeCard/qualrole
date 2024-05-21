@@ -3,7 +3,7 @@ package com.br.qualrole.controller.address
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.address.request.AddressFilterRequest
 import com.br.qualrole.dto.AddressDTO
-import com.br.qualrole.service.address.AddressService
+import com.br.qualrole.service.AddressService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,6 +26,7 @@ class AddressController(val addressService: AddressService) {
 
     @LogInfo(logParameters = true)
     @GetMapping
-    fun getByFilter(filter: AddressFilterRequest, pageable: Pageable) = addressService.getByFilterSpecification(filter, pageable)
+    fun getByFilter(filter: AddressFilterRequest, pageable: Pageable) =
+        addressService.getByFilterSpecification(filter, pageable)
 
 }

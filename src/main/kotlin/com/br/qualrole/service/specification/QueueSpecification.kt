@@ -1,4 +1,4 @@
-package com.br.qualrole.service.queue.specification
+package com.br.qualrole.service.specification
 
 import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.domain.entity.QueueEntity

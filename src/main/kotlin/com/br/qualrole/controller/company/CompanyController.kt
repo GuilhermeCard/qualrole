@@ -3,7 +3,7 @@ package com.br.qualrole.controller.company
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.company.request.CompanyRequest
 import com.br.qualrole.dto.CompanyDTO
-import com.br.qualrole.service.company.CompanyService
+import com.br.qualrole.service.CompanyService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

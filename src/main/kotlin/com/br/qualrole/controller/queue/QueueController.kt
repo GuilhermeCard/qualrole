@@ -4,7 +4,7 @@ import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.queue.request.QueueFilterRequest
 import com.br.qualrole.controller.queue.request.QueueRequest
 import com.br.qualrole.controller.queue.request.UpdateOperatingDataRequest
-import com.br.qualrole.service.queue.QueueService
+import com.br.qualrole.service.QueueService
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

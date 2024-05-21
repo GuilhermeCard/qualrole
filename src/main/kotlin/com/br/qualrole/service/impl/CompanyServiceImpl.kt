@@ -1,4 +1,4 @@
-package com.br.qualrole.service.company
+package com.br.qualrole.service.impl
 
 import br.com.caelum.stella.format.CNPJFormatter
 import br.com.caelum.stella.validation.CNPJValidator
@@ -11,22 +11,23 @@ import com.br.qualrole.exception.ResourceAlreadyExistsException
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.br.qualrole.mapper.toCompanyDTO
 import com.br.qualrole.mapper.toCompanyEntity
-import com.br.qualrole.service.address.AddressService
+import com.br.qualrole.service.AddressService
+import com.br.qualrole.service.CompanyService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.net.URI
 import kotlin.jvm.optionals.getOrNull
 
 @Service
-class CompanyService(
+class CompanyServiceImpl(
     val addressService: AddressService,
     val repository: CompanyRepository,
     @Value("\${qual-role.default.company_logo_url}")
     val defaultLogoUrl: String
-) {
+): CompanyService {
 
     @LogInfo(logParameters = true)
-    fun create(companyRequest: CompanyRequest): CompanyDTO {
+    override fun create(companyRequest: CompanyRequest): CompanyDTO {
         val document = unFormatAndValidateDocument(companyRequest.document)
 
         repository.findFirstByDocument(document)?.let {
@@ -44,11 +45,11 @@ class CompanyService(
     }
 
     @LogInfo(logParameters = true)
-    fun getCompanyById(id: Long) =
+    override fun getCompanyById(id: Long) =
         repository.findById(id).getOrNull()?.toCompanyDTO()
             ?: throw ResourceNotFoundException("Company not found with id: $id")
 
-    fun save(companyEntity: CompanyEntity) = repository.save(companyEntity)
+    override fun save(companyEntity: CompanyEntity) = repository.save(companyEntity)
 
     private fun unFormatAndValidateDocument(document: String): String {
         val result = CNPJFormatter().unformat(document)

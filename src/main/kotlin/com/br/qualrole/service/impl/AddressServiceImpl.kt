@@ -1,4 +1,4 @@
-package com.br.qualrole.service.address
+package com.br.qualrole.service.impl
 
 import com.br.qualrole.annotation.LogInfo
 import com.br.qualrole.controller.address.request.AddressFilterRequest
@@ -7,21 +7,22 @@ import com.br.qualrole.dto.AddressDTO
 import com.br.qualrole.exception.ResourceNotFoundException
 import com.br.qualrole.mapper.toAddressDTO
 import com.br.qualrole.mapper.toAddressEntity
-import com.br.qualrole.service.address.specification.AddressSpecification
+import com.br.qualrole.service.AddressService
+import com.br.qualrole.service.specification.AddressSpecification
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
 @Service
-class AddressService(
+class AddressServiceImpl(
     val addressRepository: AddressRepository
-) {
+): AddressService {
 
     @LogInfo(logParameters = true)
-    fun create(body: AddressDTO) = addressRepository.save(body.toAddressEntity()).toAddressDTO()
+    override fun create(body: AddressDTO) = addressRepository.save(body.toAddressEntity()).toAddressDTO()
 
     @LogInfo(logParameters = true)
-    fun getByFilterSpecification(
+    override fun getByFilterSpecification(
         filter: AddressFilterRequest,
         pageable: Pageable
     ): List<AddressDTO> {
@@ -30,7 +31,7 @@ class AddressService(
     }
 
     @LogInfo(logParameters = true)
-    fun getById(id: Long) = addressRepository
+    override fun getById(id: Long) = addressRepository
     .findById(id)
     .getOrElse { throw ResourceNotFoundException("Address not found with id: $id") }
     .toAddressDTO()
